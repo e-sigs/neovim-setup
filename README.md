@@ -63,7 +63,6 @@ nvim
 | `<leader>x` | Save and quit |
 | `<C-w>` | Close buffer |
 | `<Esc>` | Clear search highlight |
-| `<leader>nh` | Clear search highlight |
 
 ### Navigation
 
@@ -128,7 +127,7 @@ nvim
 |-----|-------------|
 | `[d` | Previous diagnostic |
 | `]d` | Next diagnostic |
-| `<leader>e` | Show diagnostic float |
+| `<leader>de` | Show diagnostic float |
 | `<leader>dl` | Diagnostic list |
 
 ### Git (`<leader>g`)

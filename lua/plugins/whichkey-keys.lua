@@ -35,17 +35,16 @@ return {
         { "<leader>g", group = "Git", mode = "v" },
         { "<leader>h", group = "Hunk", mode = "v" },
 
-        -- Standalone keys
-        { "<C-w>", function() Snacks.bufdelete() end, desc = "Close buffer" },
+        -- Standalone leader keys
         { "<leader>n", function() Snacks.notifier.show_history() end, desc = "Notification history" },
         { "<leader>e", function() Snacks.picker.explorer() end, desc = "File explorer" },
-        { "<leader>w", desc = "Save file" },
-        { "<leader>q", desc = "Quit" },
-        { "<leader>x", desc = "Save and quit" },
         { "<leader>.", function() Snacks.scratch() end, desc = "Scratch buffer" },
         { "<leader>S", function() Snacks.scratch.select() end, desc = "Select scratch" },
         { "<leader>/", function() Snacks.picker.grep_buffers() end, desc = "Grep buffers" },
         { "<leader><leader>", function() Snacks.picker.smart() end, desc = "Smart picker" },
+
+        -- Close buffer (override default C-w)
+        { "<C-w>", function() Snacks.bufdelete() end, desc = "Close buffer" },
 
         -- Find group
         { "<leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
@@ -89,8 +88,20 @@ return {
         -- Rename group
         { "<leader>rn", desc = "Rename symbol" },
 
-        -- Diagnostic group
+        -- Diagnostic group (actual keymaps in keymaps.lua)
+        { "<leader>de", desc = "Show diagnostic" },
         { "<leader>dl", desc = "Diagnostic list" },
+
+        -- Split group (actual keymaps in keymaps.lua)
+        { "<leader>sv", desc = "Split vertical" },
+        { "<leader>sh", desc = "Split horizontal" },
+        { "<leader>se", desc = "Equal split size" },
+        { "<leader>sx", desc = "Close split" },
+
+        -- Quick save/quit (actual keymaps in keymaps.lua)
+        { "<leader>w", desc = "Save file" },
+        { "<leader>q", desc = "Quit" },
+        { "<leader>x", desc = "Save and quit" },
 
         -- Visual mode specific
         { "<leader>hs", desc = "Stage hunk", mode = "v" },
