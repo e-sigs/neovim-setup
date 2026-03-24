@@ -1,5 +1,5 @@
 -- Snacks.nvim - All-in-one utilities by Folke
--- Replaces: indent-blankline, dressing, telescope, notify, and more
+-- Note: notifier and progress are disabled (using noice.nvim instead)
 return {
   {
     "folke/snacks.nvim",
@@ -19,17 +19,11 @@ return {
       -- Better input/select UI (replaces dressing.nvim)
       input = { enabled = true },
 
-      -- Notifications (replaces nvim-notify and fidget.nvim)
-      notifier = {
-        enabled = true,
-        timeout = 3000,
-        style = "compact",
-      },
+      -- Disabled: using noice.nvim for notifications
+      notifier = { enabled = false },
 
-      -- LSP progress (replaces fidget.nvim)
-      progress = {
-        enabled = true,
-      },
+      -- Disabled: using noice.nvim for LSP progress
+      progress = { enabled = false },
 
       -- Dashboard (startup screen)
       dashboard = {
@@ -161,9 +155,7 @@ return {
       { "<leader>.", function() Snacks.scratch() end, desc = "Scratch buffer" },
       { "<leader>S", function() Snacks.scratch.select() end, desc = "Select scratch buffer" },
 
-      -- Notifications
-      { "<leader>n", function() Snacks.notifier.show_history() end, desc = "Notification history" },
-      { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss notifications" },
+      -- Notifications handled by noice.nvim (see noice-ui.lua)
 
       -- Terminal (works in normal and terminal mode to toggle)
       { "<C-/>", function() Snacks.terminal() end, desc = "Toggle terminal", mode = { "n", "t" } },
@@ -174,29 +166,10 @@ return {
       { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev reference" },
     },
     init = function()
-      -- Store early notifications before Snacks is ready
-      local queue = {}
-      local original_notify = vim.notify
-
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.notify = function(msg, level, opts)
-        if Snacks and Snacks.notifier then
-          return Snacks.notifier.notify(msg, level, opts)
-        else
-          table.insert(queue, { msg = msg, level = level, opts = opts })
-        end
-      end
-
-      -- Replay queued notifications once Snacks is ready
+      -- Noice handles vim.notify, no need for Snacks notifier queue
       vim.api.nvim_create_autocmd("User", {
         pattern = "VeryLazy",
         callback = function()
-          -- Replay any queued notifications
-          for _, item in ipairs(queue) do
-            Snacks.notifier.notify(item.msg, item.level, item.opts)
-          end
-          queue = {}
-
           -- Debug helpers
           _G.dd = function(...)
             Snacks.debug.inspect(...)
