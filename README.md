@@ -9,7 +9,8 @@ A modern Neovim configuration focused on **backend development** and **GitOps wo
 | **Completions** | blink.cmp (LSP, snippets, buffer, path sources) |
 | **Fuzzy Finder** | Snacks picker (files, grep, buffers, LSP symbols) |
 | **LSP** | Mason auto-install with vim.lsp.config (0.11+ API) |
-| **Notifications** | Snacks notifier |
+| **UI Enhancements** | noice.nvim (cmdline, messages, notifications, LSP docs) |
+| **Notifications** | nvim-notify (via noice.nvim) |
 | **Git Integration** | Gitsigns (hunks, blame) + Snacks lazygit |
 | **UI Components** | Snacks (dashboard, indent guides, input, statuscolumn) |
 | **Theme** | Tokyonight + Lualine statusline |
@@ -31,9 +32,79 @@ Optimized for backend and DevOps workflows:
 - **JSON**: `jsonls`
 - **Lua**: `lua_ls` (for Neovim config)
 
+## Requirements
+
+### Required
+
+| Dependency | Description | Installation |
+|------------|-------------|--------------|
+| **Neovim 0.11+** | Required for new LSP and Treesitter APIs | [neovim.io](https://neovim.io) |
+| **Git** | Plugin management and git features | Pre-installed on most systems |
+| **Nerd Font** | Icons throughout the UI | [nerdfonts.com](https://www.nerdfonts.com/) |
+| **ripgrep** | Fast grep for file searching | `brew install ripgrep` |
+| **tree-sitter CLI** | Required by nvim-treesitter | `brew install tree-sitter` |
+
+### Optional (Recommended)
+
+| Dependency | Description | Installation |
+|------------|-------------|--------------|
+| **lazygit** | Terminal UI for git (used by `<leader>gg`) | `brew install lazygit` |
+| **fd** | Faster file finding | `brew install fd` |
+| **fzf** | Fuzzy finder backend | `brew install fzf` |
+
+### Language-Specific (for LSP)
+
+These are automatically installed by Mason, but you may need the base toolchains:
+
+| Language | Toolchain Required |
+|----------|-------------------|
+| **Go** | `go` (golang.org) |
+| **Python** | `python3`, `pip` |
+| **Rust** | `rustc`, `cargo` (rustup.rs) |
+| **Node.js** | `node`, `npm` (for many LSP servers) |
+
+### Quick Install (macOS)
+
+```bash
+# Install Homebrew if not already installed
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install all dependencies
+brew install neovim ripgrep tree-sitter fd fzf lazygit
+
+# Install a Nerd Font (e.g., JetBrains Mono)
+brew install --cask font-jetbrains-mono-nerd-font
+```
+
+### Quick Install (Ubuntu/Debian)
+
+```bash
+# Neovim 0.11+ (use AppImage or build from source)
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod u+x nvim.appimage
+sudo mv nvim.appimage /usr/local/bin/nvim
+
+# Install dependencies
+sudo apt install git ripgrep fd-find
+
+# tree-sitter CLI
+cargo install tree-sitter-cli
+# OR
+npm install -g tree-sitter-cli
+
+# lazygit
+LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+tar xf lazygit.tar.gz lazygit
+sudo install lazygit /usr/local/bin
+```
+
 ## Installation
 
 ```bash
+# Backup existing config (if any)
+mv ~/.config/nvim ~/.config/nvim.bak
+
 # Clone the repository
 git clone https://github.com/yourusername/neovim-setup.git ~/.config/nvim
 
@@ -41,14 +112,12 @@ git clone https://github.com/yourusername/neovim-setup.git ~/.config/nvim
 nvim
 ```
 
-### Requirements
+On first launch:
+1. lazy.nvim will auto-install all plugins
+2. Mason will auto-install all LSP servers
+3. Treesitter will auto-install language parsers
 
-- Neovim 0.11+
-- Git
-- A Nerd Font (for icons)
-- `tree-sitter` CLI (`brew install tree-sitter`)
-- `lazygit` (optional, for git TUI)
-- `ripgrep` (for grep functionality)
+Run `:checkhealth` to verify everything is working.
 
 ## Keybindings
 
@@ -181,12 +250,22 @@ nvim
 | `<leader>tT` | Toggle treesitter |
 | `<leader>th` | Toggle inlay hints |
 
+### Noice / Notifications (`<leader>n`)
+
+| Key | Description |
+|-----|-------------|
+| `<leader>nl` | Show last message |
+| `<leader>nh` | Message history |
+| `<leader>na` | All messages |
+| `<leader>nd` | Dismiss all notifications |
+| `<C-f>` | Scroll forward in hover docs |
+| `<C-b>` | Scroll backward in hover docs |
+
 ### UI (`<leader>u`)
 
 | Key | Description |
 |-----|-------------|
-| `<leader>un` | Dismiss notifications |
-| `<leader>n` | Notification history |
+| `<leader>ud` | Dismiss notifications |
 
 ### Misc
 
@@ -220,7 +299,8 @@ lua/
     blink-completion.lua    # Completions (blink.cmp)
     gitsigns-git.lua        # Git hunks and blame
     lsp-config.lua          # LSP + Mason
-    snacks-utils.lua        # All-in-one utilities (picker, notify, etc.)
+    noice-ui.lua            # UI enhancements (cmdline, messages, notifications)
+    snacks-utils.lua        # Utilities (picker, dashboard, terminal, etc.)
     tokyonight-theme.lua    # Theme + statusline
     treesitter-syntax.lua   # Syntax highlighting
     whichkey-keys.lua       # Keybinding hints
@@ -232,20 +312,35 @@ After installation, run these commands inside Neovim:
 
 ```vim
 :checkhealth              " Run health checks
+:checkhealth noice        " Check noice.nvim specifically
 :Lazy                     " Open plugin manager
 :Mason                    " Open LSP server manager
 :LspInfo                  " Check LSP status
 ```
 
-## Snacks.nvim Features
+## Plugin Architecture
 
-This configuration uses [snacks.nvim](https://github.com/folke/snacks.nvim) as a unified utility layer, replacing multiple plugins:
+### Noice.nvim Features
 
-| Snacks Feature | Replaces |
-|----------------|----------|
+[noice.nvim](https://github.com/folke/noice.nvim) provides enhanced UI:
+
+| Feature | Description |
+|---------|-------------|
+| `cmdline` | Fancy popup for `:` commands with syntax highlighting |
+| `messages` | Better message display, replaces `:messages` |
+| `notify` | Notification system (via nvim-notify) |
+| `lsp.progress` | LSP progress indicator |
+| `lsp.hover` | Enhanced hover docs with borders |
+| `lsp.signature` | Enhanced signature help |
+| `search` | Search count as virtual text |
+
+### Snacks.nvim Features
+
+[snacks.nvim](https://github.com/folke/snacks.nvim) provides utilities:
+
+| Feature | Replaces |
+|---------|----------|
 | `picker` | telescope.nvim |
-| `notifier` | nvim-notify |
-| `progress` | fidget.nvim |
 | `indent` | indent-blankline.nvim |
 | `input` | dressing.nvim |
 | `dashboard` | alpha-nvim / dashboard-nvim |
@@ -253,6 +348,8 @@ This configuration uses [snacks.nvim](https://github.com/folke/snacks.nvim) as a
 | `lazygit` | lazygit.nvim |
 | `terminal` | toggleterm.nvim |
 | `gitbrowse` | git-browse.nvim |
+| `words` | vim-illuminate |
+| `statuscolumn` | statuscol.nvim |
 
 ## License
 
