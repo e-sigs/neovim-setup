@@ -106,6 +106,9 @@ return {
       },
     },
     keys = {
+      -- File explorer
+      { "<leader>e", function() Snacks.picker.explorer() end, desc = "File explorer" },
+
       -- File pickers (replaces telescope)
       { "<leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
       { "<leader>fg", function() Snacks.picker.grep() end, desc = "Live grep" },
