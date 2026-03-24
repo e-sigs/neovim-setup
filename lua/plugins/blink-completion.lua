@@ -6,7 +6,6 @@ return {
     version = "1.*",
     dependencies = {
       "rafamadriz/friendly-snippets", -- Snippet collection
-      "L3MON4D3/LuaSnip", -- Snippet engine (optional, for custom snippets)
     },
     event = "InsertEnter",
     opts = {
@@ -61,7 +60,10 @@ return {
 
       sources = {
         default = { "lsp", "path", "snippets", "buffer" },
-        cmdline = {}, -- Disable cmdline completions
+      },
+
+      cmdline = {
+        enabled = false,
       },
 
       signature = {
@@ -69,10 +71,6 @@ return {
         window = {
           border = "rounded",
         },
-      },
-
-      snippets = {
-        preset = "luasnip",
       },
     },
     opts_extend = { "sources.default" },

@@ -1,4 +1,4 @@
--- Treesitter for better syntax highlighting
+-- treesitter-syntax - Syntax highlighting
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -8,102 +8,25 @@ return {
       "nvim-treesitter/nvim-treesitter-textobjects",
     },
     config = function()
-      require("nvim-treesitter.configs").setup({
-        -- Languages for backend/GitOps development
-        ensure_installed = {
-          -- Backend
-          "go",
-          "gomod",
-          "gosum",
-          "python",
-          "rust",
+      -- Languages for backend/GitOps development
+      local ensure_installed = {
+        -- Backend
+        "go", "gomod", "gosum", "python", "rust",
+        -- GitOps/DevOps
+        "terraform", "hcl", "yaml", "json", "jsonc", "toml", "dockerfile", "bash", "make",
+        -- Config/Misc
+        "lua", "luadoc", "vim", "vimdoc", "markdown", "markdown_inline",
+        "gitcommit", "gitignore", "diff", "regex",
+      }
 
-          -- GitOps/DevOps
-          "terraform",
-          "hcl",
-          "yaml",
-          "json",
-          "jsonc",
-          "toml",
-          "dockerfile",
-          "bash",
-          "make",
+      -- Install parsers
+      require("nvim-treesitter").install(ensure_installed)
 
-          -- Config/Misc
-          "lua",
-          "luadoc",
-          "vim",
-          "vimdoc",
-          "markdown",
-          "markdown_inline",
-          "gitcommit",
-          "gitignore",
-          "diff",
-          "regex",
-        },
-
-        auto_install = true,
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false,
-        },
-        indent = {
-          enable = true,
-        },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            init_selection = "<C-space>",
-            node_incremental = "<C-space>",
-            scope_incremental = false,
-            node_decremental = "<bs>",
-          },
-        },
-        textobjects = {
-          select = {
-            enable = true,
-            lookahead = true,
-            keymaps = {
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-              ["ac"] = "@class.outer",
-              ["ic"] = "@class.inner",
-              ["aa"] = "@parameter.outer",
-              ["ia"] = "@parameter.inner",
-              ["ab"] = "@block.outer",
-              ["ib"] = "@block.inner",
-            },
-          },
-          move = {
-            enable = true,
-            set_jumps = true,
-            goto_next_start = {
-              ["]f"] = "@function.outer",
-              ["]c"] = "@class.outer",
-            },
-            goto_next_end = {
-              ["]F"] = "@function.outer",
-              ["]C"] = "@class.outer",
-            },
-            goto_previous_start = {
-              ["[f"] = "@function.outer",
-              ["[c"] = "@class.outer",
-            },
-            goto_previous_end = {
-              ["[F"] = "@function.outer",
-              ["[C"] = "@class.outer",
-            },
-          },
-          swap = {
-            enable = true,
-            swap_next = {
-              ["<leader>a"] = "@parameter.inner",
-            },
-            swap_previous = {
-              ["<leader>A"] = "@parameter.inner",
-            },
-          },
-        },
+      -- Enable features via vim.treesitter
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          pcall(vim.treesitter.start)
+        end,
       })
     end,
   },
