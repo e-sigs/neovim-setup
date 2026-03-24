@@ -19,11 +19,16 @@ return {
       -- Better input/select UI (replaces dressing.nvim)
       input = { enabled = true },
 
-      -- Notifications (replaces nvim-notify)
+      -- Notifications (replaces nvim-notify and fidget.nvim)
       notifier = {
         enabled = true,
         timeout = 3000,
         style = "compact",
+      },
+
+      -- LSP progress (replaces fidget.nvim)
+      progress = {
+        enabled = true,
       },
 
       -- Dashboard (startup screen)
@@ -169,9 +174,29 @@ return {
       { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev reference" },
     },
     init = function()
+      -- Store early notifications before Snacks is ready
+      local queue = {}
+      local original_notify = vim.notify
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.notify = function(msg, level, opts)
+        if Snacks and Snacks.notifier then
+          return Snacks.notifier.notify(msg, level, opts)
+        else
+          table.insert(queue, { msg = msg, level = level, opts = opts })
+        end
+      end
+
+      -- Replay queued notifications once Snacks is ready
       vim.api.nvim_create_autocmd("User", {
         pattern = "VeryLazy",
         callback = function()
+          -- Replay any queued notifications
+          for _, item in ipairs(queue) do
+            Snacks.notifier.notify(item.msg, item.level, item.opts)
+          end
+          queue = {}
+
           -- Debug helpers
           _G.dd = function(...)
             Snacks.debug.inspect(...)

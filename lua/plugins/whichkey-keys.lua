@@ -15,18 +15,86 @@ return {
       local wk = require("which-key")
       wk.setup(opts)
 
-      -- Register key groups
+      -- Register key groups and individual keys
       wk.add({
+        -- Groups (normal mode)
         { "<leader>b", group = "Buffer" },
         { "<leader>c", group = "Code" },
         { "<leader>d", group = "Diagnostic" },
         { "<leader>f", group = "Find" },
         { "<leader>g", group = "Git" },
         { "<leader>h", group = "Hunk" },
+        { "<leader>o", group = "OpenCode" },
         { "<leader>r", group = "Rename" },
         { "<leader>s", group = "Split" },
         { "<leader>t", group = "Toggle" },
         { "<leader>u", group = "UI" },
+
+        -- Groups (visual mode)
+        { "<leader>c", group = "Code", mode = "v" },
+        { "<leader>g", group = "Git", mode = "v" },
+        { "<leader>h", group = "Hunk", mode = "v" },
+
+        -- Standalone keys
+        { "<C-w>", function() Snacks.bufdelete() end, desc = "Close buffer" },
+        { "<leader>n", function() Snacks.notifier.show_history() end, desc = "Notification history" },
+        { "<leader>e", function() Snacks.picker.explorer() end, desc = "File explorer" },
+        { "<leader>w", desc = "Save file" },
+        { "<leader>q", desc = "Quit" },
+        { "<leader>x", desc = "Save and quit" },
+        { "<leader>.", function() Snacks.scratch() end, desc = "Scratch buffer" },
+        { "<leader>S", function() Snacks.scratch.select() end, desc = "Select scratch" },
+        { "<leader>/", function() Snacks.picker.grep_buffers() end, desc = "Grep buffers" },
+        { "<leader><leader>", function() Snacks.picker.smart() end, desc = "Smart picker" },
+
+        -- Find group
+        { "<leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
+        { "<leader>fg", function() Snacks.picker.grep() end, desc = "Live grep" },
+        { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
+        { "<leader>fh", function() Snacks.picker.help() end, desc = "Help tags" },
+        { "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent files" },
+        { "<leader>fw", function() Snacks.picker.grep_word() end, desc = "Grep word" },
+        { "<leader>fs", function() Snacks.picker.lsp_symbols() end, desc = "Document symbols" },
+        { "<leader>fS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "Workspace symbols" },
+        { "<leader>fd", function() Snacks.picker.diagnostics() end, desc = "Diagnostics" },
+        { "<leader>fc", function() Snacks.picker.commands() end, desc = "Commands" },
+        { "<leader>fk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
+        { "<leader>f/", function() Snacks.picker.lines() end, desc = "Buffer lines" },
+        { "<leader>f:", function() Snacks.picker.command_history() end, desc = "Command history" },
+
+        -- Git group
+        { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
+        { "<leader>gl", function() Snacks.lazygit.log() end, desc = "Lazygit log" },
+        { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazygit file log" },
+        { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git browse" },
+        { "<leader>gc", function() Snacks.picker.git_log() end, desc = "Git commits" },
+        { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git branches" },
+        { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git status" },
+        { "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git diff" },
+
+        -- Buffer group
+        { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete buffer" },
+        { "<leader>bo", function() Snacks.bufdelete.other() end, desc = "Delete other buffers" },
+
+        -- Toggle group
+        { "<leader>tt", function() Snacks.terminal() end, desc = "Terminal" },
+
+        -- UI group
+        { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss notifications" },
+
+        -- Code group (from LSP) - works in normal and visual mode
+        { "<leader>ca", desc = "Code action", mode = { "n", "v" } },
+        { "<leader>cf", desc = "Format buffer/selection", mode = { "n", "v" } },
+
+        -- Rename group
+        { "<leader>rn", desc = "Rename symbol" },
+
+        -- Diagnostic group
+        { "<leader>dl", desc = "Diagnostic list" },
+
+        -- Visual mode specific
+        { "<leader>hs", desc = "Stage hunk", mode = "v" },
+        { "<leader>hr", desc = "Reset hunk", mode = "v" },
       })
     end,
   },

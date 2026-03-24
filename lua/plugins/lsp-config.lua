@@ -35,7 +35,6 @@ return {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "saghen/blink.cmp",
-      { "j-hui/fidget.nvim", opts = {} },
       { "folke/lazydev.nvim", ft = "lua", opts = {} },
     },
     config = function()
@@ -45,19 +44,19 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           local bufnr = args.buf
-          local nmap = function(keys, func, desc)
-            vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
+          local map = function(modes, keys, func, desc)
+            vim.keymap.set(modes, keys, func, { buffer = bufnr, desc = desc })
           end
 
           -- LSP keymaps (navigation handled by Snacks picker: gd, gr, gi, gy)
-          nmap("gD", vim.lsp.buf.declaration, "Go to declaration")
-          nmap("K", vim.lsp.buf.hover, "Hover documentation")
-          nmap("<C-k>", vim.lsp.buf.signature_help, "Signature help")
-          nmap("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
-          nmap("<leader>ca", vim.lsp.buf.code_action, "Code action")
-          nmap("<leader>cf", function()
+          map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+          map("n", "K", vim.lsp.buf.hover, "Hover documentation")
+          map({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help, "Signature help")
+          map("n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+          map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code action")
+          map({ "n", "v" }, "<leader>cf", function()
             vim.lsp.buf.format({ async = true })
-          end, "Format buffer")
+          end, "Format buffer/selection")
         end,
       })
 

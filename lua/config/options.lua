@@ -60,3 +60,8 @@ opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- Confirm before closing unsaved buffers
 opt.confirm = true
+
+-- Reduce "Press Enter" prompts
+opt.shortmess:append("c") -- Don't show completion messages
+opt.shortmess:append("C") -- Don't show scanning messages
+opt.shortmess:append("s") -- Don't show "search hit BOTTOM"

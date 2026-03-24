@@ -18,8 +18,12 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
+-- Close buffer with Ctrl-w
+keymap("n", "<C-w>", function() Snacks.bufdelete() end, { desc = "Close buffer" })
+
 -- Clear search highlight
 keymap("n", "<leader>nh", ":nohlsearch<CR>", { desc = "Clear search highlight" })
+keymap("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 
 -- Stay in indent mode when indenting
 keymap("v", "<", "<gv", opts)
@@ -43,9 +47,9 @@ keymap("n", "<leader>w", ":w<CR>", { desc = "Save file" })
 keymap("n", "<leader>q", ":q<CR>", { desc = "Quit" })
 keymap("n", "<leader>x", ":x<CR>", { desc = "Save and quit" })
 
--- Split windows
-keymap("n", "<leader>sv", "<C-w>v", { desc = "Split vertical" })
-keymap("n", "<leader>sh", "<C-w>s", { desc = "Split horizontal" })
+-- Split windows (using leader since C-w is now close buffer)
+keymap("n", "<leader>sv", ":vsplit<CR>", { desc = "Split vertical" })
+keymap("n", "<leader>sh", ":split<CR>", { desc = "Split horizontal" })
 keymap("n", "<leader>se", "<C-w>=", { desc = "Equal split size" })
 keymap("n", "<leader>sx", ":close<CR>", { desc = "Close split" })
 

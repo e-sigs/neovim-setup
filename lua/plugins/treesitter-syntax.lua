@@ -3,31 +3,19 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-    },
+    lazy = false,
     config = function()
-      -- Languages for backend/GitOps development
-      local ensure_installed = {
-        -- Backend
-        "go", "gomod", "gosum", "python", "rust",
-        -- GitOps/DevOps
-        "terraform", "hcl", "yaml", "json", "jsonc", "toml", "dockerfile", "bash", "make",
-        -- Config/Misc
-        "lua", "luadoc", "vim", "vimdoc", "markdown", "markdown_inline",
-        "gitcommit", "gitignore", "diff", "regex",
-      }
-
-      -- Install parsers
-      require("nvim-treesitter").install(ensure_installed)
-
-      -- Enable features via vim.treesitter
+      -- Enable highlighting for all filetypes with treesitter support
       vim.api.nvim_create_autocmd("FileType", {
-        callback = function()
-          pcall(vim.treesitter.start)
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
         end,
       })
     end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
 }
