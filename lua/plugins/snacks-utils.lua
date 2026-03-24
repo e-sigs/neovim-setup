@@ -165,8 +165,8 @@ return {
       { "<leader>n", function() Snacks.notifier.show_history() end, desc = "Notification history" },
       { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss notifications" },
 
-      -- Terminal
-      { "<C-/>", function() Snacks.terminal() end, desc = "Toggle terminal" },
+      -- Terminal (works in normal and terminal mode to toggle)
+      { "<C-/>", function() Snacks.terminal() end, desc = "Toggle terminal", mode = { "n", "t" } },
       { "<leader>tt", function() Snacks.terminal() end, desc = "Toggle terminal" },
 
       -- Words (highlight references)
