@@ -1,30 +1,27 @@
--- Tokyonight colorscheme and statusline
+-- OneDarkPro colorscheme and statusline
 return {
-  -- Tokyonight colorscheme
+  -- OneDarkPro colorscheme
   {
-    "folke/tokyonight.nvim",
+    "olimorris/onedarkpro.nvim",
     lazy = false,
     priority = 1000,
     opts = {
-      style = "night",
-      transparent = false,
-      terminal_colors = true,
       styles = {
-        comments = { italic = true },
-        keywords = { italic = true },
-        functions = {},
-        variables = {},
-        sidebars = "dark",
-        floats = "dark",
+        comments = "italic",
+        keywords = "italic",
+        functions = "NONE",
+        variables = "NONE",
       },
-      sidebars = { "qf", "help", "terminal" },
-      hide_inactive_statusline = false,
-      dim_inactive = false,
-      lualine_bold = true,
+      options = {
+        cursorline = true,
+        transparency = false,
+        terminal_colors = true,
+        highlight_inactive_windows = false,
+      },
     },
     config = function(_, opts)
-      require("tokyonight").setup(opts)
-      vim.cmd.colorscheme("tokyonight")
+      require("onedarkpro").setup(opts)
+      vim.cmd.colorscheme("onedark")
     end,
   },
 
@@ -35,7 +32,7 @@ return {
     event = "VeryLazy",
     opts = {
       options = {
-        theme = "tokyonight",
+        theme = "onedark",
         globalstatus = true,
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },

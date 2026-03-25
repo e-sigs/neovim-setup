@@ -17,5 +17,43 @@ return {
     "nvim-treesitter/nvim-treesitter-textobjects",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      local ts_repeat_move = require("nvim-treesitter-textobjects.move")
+      local ts_select = require("nvim-treesitter-textobjects.select")
+
+      -- Setup selection
+      ts_select.setup({
+        lookahead = true,
+      })
+
+      -- Setup movement
+      ts_repeat_move.setup({
+        set_jumps = true,
+      })
+
+      local keymap = vim.keymap.set
+
+      -- Movement keymaps
+      keymap({ "n", "x", "o" }, "]f", function() ts_repeat_move.goto_next_start("@function.outer") end, { desc = "Next function start" })
+      keymap({ "n", "x", "o" }, "[f", function() ts_repeat_move.goto_previous_start("@function.outer") end, { desc = "Previous function start" })
+      keymap({ "n", "x", "o" }, "]F", function() ts_repeat_move.goto_next_end("@function.outer") end, { desc = "Next function end" })
+      keymap({ "n", "x", "o" }, "[F", function() ts_repeat_move.goto_previous_end("@function.outer") end, { desc = "Previous function end" })
+
+      keymap({ "n", "x", "o" }, "]c", function() ts_repeat_move.goto_next_start("@class.outer") end, { desc = "Next class start" })
+      keymap({ "n", "x", "o" }, "[c", function() ts_repeat_move.goto_previous_start("@class.outer") end, { desc = "Previous class start" })
+      keymap({ "n", "x", "o" }, "]C", function() ts_repeat_move.goto_next_end("@class.outer") end, { desc = "Next class end" })
+      keymap({ "n", "x", "o" }, "[C", function() ts_repeat_move.goto_previous_end("@class.outer") end, { desc = "Previous class end" })
+
+      keymap({ "n", "x", "o" }, "]a", function() ts_repeat_move.goto_next_start("@parameter.inner") end, { desc = "Next argument" })
+      keymap({ "n", "x", "o" }, "[a", function() ts_repeat_move.goto_previous_start("@parameter.inner") end, { desc = "Previous argument" })
+
+      -- Selection keymaps
+      keymap({ "x", "o" }, "af", function() ts_select.select_textobject("@function.outer") end, { desc = "Select outer function" })
+      keymap({ "x", "o" }, "if", function() ts_select.select_textobject("@function.inner") end, { desc = "Select inner function" })
+      keymap({ "x", "o" }, "ac", function() ts_select.select_textobject("@class.outer") end, { desc = "Select outer class" })
+      keymap({ "x", "o" }, "ic", function() ts_select.select_textobject("@class.inner") end, { desc = "Select inner class" })
+      keymap({ "x", "o" }, "aa", function() ts_select.select_textobject("@parameter.outer") end, { desc = "Select outer argument" })
+      keymap({ "x", "o" }, "ia", function() ts_select.select_textobject("@parameter.inner") end, { desc = "Select inner argument" })
+    end,
   },
 }
