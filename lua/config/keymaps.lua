@@ -56,3 +56,10 @@ keymap("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "
 keymap("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Next diagnostic" })
 keymap("n", "<leader>de", vim.diagnostic.open_float, { desc = "Show diagnostic" })
 keymap("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Diagnostic list" })
+
+-- Cmdline navigation (for noice popupmenu)
+keymap("c", "<Down>", "<C-n>", { desc = "Next item" })
+keymap("c", "<Up>", "<C-p>", { desc = "Previous item" })
+
+-- Select all
+keymap("n", "<C-a>", "ggVG", { desc = "Select all" })
