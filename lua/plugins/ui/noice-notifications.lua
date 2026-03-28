@@ -82,7 +82,11 @@ return {
           local View = require("noice.view")
           local Manager = require("noice.message.manager")
           local view = View.get_view("split", { enter = true, format = "details" })
-          view:set(Manager.get({}, { history = true, sort = true, reverse = true }))
+          -- Filter out msg_showcmd events (keypresses)
+          local filter = {
+            ["not"] = { event = "msg_showcmd" },
+          }
+          view:set(Manager.get(filter, { history = true, sort = true, reverse = true }))
           view:display()
         end,
         desc = "Noice messages (newest first)",
@@ -93,7 +97,11 @@ return {
           local View = require("noice.view")
           local Manager = require("noice.message.manager")
           local view = View.get_view("split", { enter = true, format = "details" })
-          view:set(Manager.get({}, { history = true, sort = true, reverse = false }))
+          -- Filter out msg_showcmd events (keypresses)
+          local filter = {
+            ["not"] = { event = "msg_showcmd" },
+          }
+          view:set(Manager.get(filter, { history = true, sort = true, reverse = false }))
           view:display()
         end,
         desc = "Noice messages (oldest first)",
