@@ -12,8 +12,15 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load plugins from lua/plugins directory
-require("lazy").setup("plugins", {
+-- Load plugins from lua/plugins directory (including subdirectories)
+require("lazy").setup({
+  { import = "plugins.coding" },
+  { import = "plugins.editor" },
+  { import = "plugins.git" },
+  { import = "plugins.lsp" },
+  { import = "plugins.tools" },
+  { import = "plugins.ui" },
+}, {
   install = {
     colorscheme = { "tokyonight", "habamax" },
   },
