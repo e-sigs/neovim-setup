@@ -101,8 +101,7 @@ return {
         -- Quick save/quit (actual keymaps in keymaps.lua)
         { "<leader>w", desc = "Save file" },
         { "<leader>q", group = "Quit" },
-        { "<leader>qq", desc = "Quit" },
-        { "<leader>qa", desc = "Quit all" },
+        { "<leader>qq", desc = "Quit all" },
         { "<leader>qw", desc = "Save and quit" },
         { "<leader>qQ", desc = "Quit without saving" },
 
