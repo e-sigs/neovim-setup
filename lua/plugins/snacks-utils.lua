@@ -1,5 +1,15 @@
 -- Snacks.nvim - All-in-one utilities by Folke
 -- Note: notifier and progress are disabled (using noice.nvim instead)
+
+-- Helper for terminal navigation
+local function term_nav(dir)
+  return function(self)
+    return self:is_floating() and "<C-" .. dir .. ">" or vim.schedule(function()
+      vim.cmd.wincmd(dir)
+    end)
+  end
+end
+
 return {
   {
     "folke/snacks.nvim",
@@ -94,8 +104,20 @@ return {
       -- Big file handling
       bigfile = { enabled = true },
 
-      -- Terminal
-      terminal = { enabled = true },
+      -- Terminal with window navigation
+      terminal = {
+        enabled = true,
+        win = {
+          keys = {
+            nav_h = { "<C-h>", term_nav("h"), desc = "Go to Left Window", expr = true, mode = "t" },
+            nav_j = { "<C-j>", term_nav("j"), desc = "Go to Lower Window", expr = true, mode = "t" },
+            nav_k = { "<C-k>", term_nav("k"), desc = "Go to Upper Window", expr = true, mode = "t" },
+            nav_l = { "<C-l>", term_nav("l"), desc = "Go to Right Window", expr = true, mode = "t" },
+            hide_slash = { "<C-/>", "hide", desc = "Hide Terminal", mode = "t" },
+            hide_underscore = { "<c-_>", "hide", desc = "which_key_ignore", mode = "t" },
+          },
+        },
+      },
 
       -- Styles
       styles = {
@@ -152,8 +174,9 @@ return {
       { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git browse" },
 
       -- Scratch buffers
-      { "<leader>.", function() Snacks.scratch() end, desc = "Scratch buffer" },
-      { "<leader>S", function() Snacks.scratch.select() end, desc = "Select scratch buffer" },
+      { "<leader>.", function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
+      { "<leader>S", function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
+      { "<leader>dps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Buffer" },
 
       -- Notifications handled by noice.nvim (see noice-ui.lua)
 

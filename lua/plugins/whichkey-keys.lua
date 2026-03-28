@@ -24,12 +24,11 @@ return {
         { "<leader>f", group = "Find" },
         { "<leader>g", group = "Git" },
         { "<leader>h", group = "Hunk" },
-        { "<leader>n", group = "Noice" },
         { "<leader>o", group = "OpenCode" },
+        { "<leader>n", group = "Notifications" },
         { "<leader>r", group = "Rename" },
         { "<leader>s", group = "Split" },
         { "<leader>t", group = "Toggle" },
-        { "<leader>u", group = "UI" },
 
         -- Groups (visual mode)
         { "<leader>c", group = "Code", mode = "v" },
@@ -38,8 +37,6 @@ return {
 
         -- Standalone leader keys
         { "<leader>e", function() Snacks.picker.explorer() end, desc = "File explorer" },
-        { "<leader>.", function() Snacks.scratch() end, desc = "Scratch buffer" },
-        { "<leader>S", function() Snacks.scratch.select() end, desc = "Select scratch" },
         { "<leader>/", function() Snacks.picker.grep_buffers() end, desc = "Grep buffers" },
         { "<leader><leader>", function() Snacks.picker.smart() end, desc = "Smart picker" },
 
@@ -78,14 +75,9 @@ return {
         -- Toggle group
         { "<leader>tt", function() Snacks.terminal() end, desc = "Terminal" },
 
-        -- UI group (noice dismiss is <leader>nd)
-        { "<leader>ud", function() require("noice").cmd("dismiss") end, desc = "Dismiss notifications" },
-
-        -- Noice group (keymaps defined in noice-ui.lua)
-        { "<leader>nl", desc = "Noice last message" },
-        { "<leader>nh", desc = "Noice history" },
-        { "<leader>na", desc = "Noice all" },
-        { "<leader>nd", desc = "Dismiss all" },
+        -- Notifications (using Snacks notifier)
+        { "<leader>nd", function() Snacks.notifier.hide() end, desc = "Dismiss notifications" },
+        { "<leader>nh", function() Snacks.notifier.show_history() end, desc = "Notification history" },
 
         -- Code group (from LSP) - works in normal and visual mode
         { "<leader>ca", desc = "Code action", mode = { "n", "v" } },
