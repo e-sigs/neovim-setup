@@ -9,11 +9,11 @@ A modern Neovim configuration focused on **backend development** and **GitOps wo
 | **Completions** | blink.cmp (LSP, snippets, buffer, path sources) |
 | **Fuzzy Finder** | Snacks picker (files, grep, buffers, LSP symbols) |
 | **LSP** | Mason auto-install with vim.lsp.config (0.11+ API) |
-| **UI Enhancements** | noice.nvim (cmdline, messages, notifications, LSP docs) |
-| **Notifications** | nvim-notify (via noice.nvim) |
+| **UI Enhancements** | noice.nvim (cmdline, messages, LSP docs) |
+| **Notifications** | Snacks notifier (popup notifications + history) |
 | **Git Integration** | Gitsigns (hunks, blame) + Snacks lazygit |
 | **UI Components** | Snacks (dashboard, indent guides, input, statuscolumn) |
-| **Theme** | Tokyonight + Lualine statusline |
+| **Theme** | OneDarkPro + Lualine statusline with clock |
 | **Syntax Highlighting** | Treesitter |
 | **Keybinding Hints** | which-key |
 
@@ -242,6 +242,7 @@ Run `:checkhealth` to verify everything is working.
 |-----|-------------|
 | `<leader>tt` | Terminal |
 | `<leader>tb` | Toggle line blame |
+| `<leader>tc` | Toggle time format (12/24hr) |
 | `<leader>td` | Toggle diagnostics |
 | `<leader>ts` | Toggle spelling |
 | `<leader>tw` | Toggle wrap |
@@ -250,22 +251,14 @@ Run `:checkhealth` to verify everything is working.
 | `<leader>tT` | Toggle treesitter |
 | `<leader>th` | Toggle inlay hints |
 
-### Noice / Notifications (`<leader>n`)
+### Notifications (`<leader>n`)
 
 | Key | Description |
 |-----|-------------|
-| `<leader>nl` | Show last message |
-| `<leader>nh` | Message history |
-| `<leader>na` | All messages |
+| `<leader>nl` | Show last message (noice) |
+| `<leader>nh` | Notification history (snacks popup) |
+| `<leader>nn` | All messages (noice split) |
 | `<leader>nd` | Dismiss all notifications |
-| `<C-f>` | Scroll forward in hover docs |
-| `<C-b>` | Scroll backward in hover docs |
-
-### UI (`<leader>u`)
-
-| Key | Description |
-|-----|-------------|
-| `<leader>ud` | Dismiss notifications |
 
 ### Misc
 
@@ -296,14 +289,25 @@ lua/
     autocmds.lua            # Autocommands (filetype detection)
     lazy.lua                # Plugin manager bootstrap
   plugins/
-    blink-completion.lua    # Completions (blink.cmp)
-    gitsigns-git.lua        # Git hunks and blame
-    lsp-config.lua          # LSP + Mason
-    noice-ui.lua            # UI enhancements (cmdline, messages, notifications)
-    snacks-utils.lua        # Utilities (picker, dashboard, terminal, etc.)
-    tokyonight-theme.lua    # Theme + statusline
-    treesitter-syntax.lua   # Syntax highlighting
-    whichkey-keys.lua       # Keybinding hints
+    coding/
+      blink-completion.lua  # Completions (blink.cmp)
+      minipairs-autopairs.lua # Auto-close pairs
+      treesitter-syntax.lua # Syntax highlighting
+    editor/
+      surround-edit.lua     # Surround text objects
+    git/
+      gitsigns-git.lua      # Git hunks and blame
+    lsp/
+      mason-lsp.lua         # LSP server installer
+      nvim-lspconfig-servers.lua # LSP configuration
+    tools/
+      opencode-ai.lua       # OpenCode AI integration
+    ui/
+      lualine-statusline.lua # Statusline with clock
+      noice-notifications.lua # Cmdline, messages UI
+      onedarkpro-theme.lua  # Theme
+      snacks-utils.lua      # Utilities (picker, notifier, dashboard, etc.)
+      whichkey-keys.lua     # Keybinding hints
 ```
 
 ## Validation
@@ -328,7 +332,6 @@ After installation, run these commands inside Neovim:
 |---------|-------------|
 | `cmdline` | Fancy popup for `:` commands with syntax highlighting |
 | `messages` | Better message display, replaces `:messages` |
-| `notify` | Notification system (via nvim-notify) |
 | `lsp.progress` | LSP progress indicator |
 | `lsp.hover` | Enhanced hover docs with borders |
 | `lsp.signature` | Enhanced signature help |
@@ -341,6 +344,7 @@ After installation, run these commands inside Neovim:
 | Feature | Replaces |
 |---------|----------|
 | `picker` | telescope.nvim |
+| `notifier` | nvim-notify |
 | `indent` | indent-blankline.nvim |
 | `input` | dressing.nvim |
 | `dashboard` | alpha-nvim / dashboard-nvim |
@@ -350,6 +354,14 @@ After installation, run these commands inside Neovim:
 | `gitbrowse` | git-browse.nvim |
 | `words` | vim-illuminate |
 | `statuscolumn` | statuscol.nvim |
+
+### Time Format Toggle
+
+The statusline clock and notification timestamps support toggling between 12-hour and 24-hour format:
+
+- Press `<leader>tc` to toggle time format
+- Default is 12-hour format (e.g., "02:30 PM")
+- Toggle syncs across: Lualine clock, Noice messages, Snacks notifications
 
 ## License
 

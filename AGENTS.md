@@ -58,7 +58,25 @@ lua/
     autocmds.lua            # Autocommands
     lazy.lua                # Plugin manager bootstrap
   plugins/
-    {name}-{purpose}.lua    # One file per plugin/feature
+    coding/                 # Coding-related plugins
+      blink-completion.lua  # Completions
+      minipairs-autopairs.lua
+      treesitter-syntax.lua
+    editor/                 # Editor enhancements
+      surround-edit.lua
+    git/                    # Git integration
+      gitsigns-git.lua
+    lsp/                    # Language server support
+      mason-lsp.lua
+      nvim-lspconfig-servers.lua
+    tools/                  # External tool integrations
+      opencode-ai.lua
+    ui/                     # UI components
+      lualine-statusline.lua
+      noice-notifications.lua
+      onedarkpro-theme.lua
+      snacks-utils.lua
+      whichkey-keys.lua
 ```
 
 ## Code Style Guidelines
@@ -148,7 +166,8 @@ autocmd("EventName", {
 | Git operations | `<leader>g` | `gc` commits, `gb` branches, `gs` status |
 | Git hunks | `<leader>h` | `hs` stage, `hr` reset, `hp` preview |
 | LSP | `g` / `<leader>` | `gd` definition, `gr` references, `ca` code action |
-| Toggles | `<leader>t` | `tb` toggle blame, `td` toggle deleted |
+| Toggles | `<leader>t` | `tb` toggle blame, `tc` toggle time format, `td` toggle diagnostics |
+| Notifications | `<leader>n` | `nh` history (snacks), `nn` all messages (noice), `nd` dismiss |
 | Windows | `<leader>s` | `sv` vertical, `sh` horizontal split |
 | Diagnostics | `[d` / `]d` | Navigate prev/next diagnostic |
 
@@ -164,6 +183,7 @@ Backend/GitOps focus:
 - **Shell**: `bashls`
 - **Helm**: `helm_ls`
 - **Lua**: `lua_ls` (for Neovim config)
+- **JSON**: `jsonls`
 
 ## Error Handling
 
@@ -197,16 +217,28 @@ Custom filetypes are detected in `lua/config/autocmds.lua`:
 
 ### Adding a New Plugin
 
-1. Create `lua/plugins/{name}-{purpose}.lua`
+1. Create `lua/plugins/{category}/{name}-{purpose}.lua`
 2. Return a lazy.nvim spec table
 3. Restart Neovim or run `:Lazy sync`
 
 ### Adding a New LSP Server
 
-1. Add to the `servers` table in `lua/plugins/lsp-config.lua`
-2. Run `:Mason` to install, or restart Neovim for auto-install
+1. Add to the `servers` table in `lua/plugins/lsp/nvim-lspconfig-servers.lua`
+2. Add to `ensure_installed` in `lua/plugins/lsp/mason-lsp.lua`
+3. Run `:Mason` to install, or restart Neovim for auto-install
 
 ### Adding Global Keymaps
 
 1. Edit `lua/config/keymaps.lua`
 2. Use `vim.keymap.set()` with descriptive `desc` option
+
+### Time Format Toggle
+
+The config includes a unified time format toggle (`<leader>tc`) that syncs:
+- Lualine statusline clock
+- Noice message timestamps  
+- Snacks notification timestamps
+
+Default is 12-hour format. The toggle updates all three systems at runtime using:
+- `vim.g.time_format_12hr` global variable
+- Direct config updates to noice and snacks notifier
