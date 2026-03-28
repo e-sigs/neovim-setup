@@ -4,7 +4,10 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
+      preset = "helix",  -- Compact corner popup
       delay = 0,  -- Show immediately, don't add to key timeout
+      -- Sort: groups first, then alphabetically
+      sort = { "group", "local", "order", "alphanum", "mod" },
       plugins = {
         spelling = { enabled = true },
       },
