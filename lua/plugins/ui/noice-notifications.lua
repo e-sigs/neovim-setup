@@ -76,7 +76,28 @@ return {
     },
     keys = {
       { "<leader>nl", function() require("noice").cmd("last") end, desc = "Last message" },
-      { "<leader>nn", function() require("noice").cmd("all") end, desc = "Noice messages (split)" },
+      {
+        "<leader>nn",
+        function()
+          local View = require("noice.view")
+          local Manager = require("noice.message.manager")
+          local view = View.get_view("split", { enter = true, format = "details" })
+          view:set(Manager.get({}, { history = true, sort = true, reverse = true }))
+          view:display()
+        end,
+        desc = "Noice messages (newest first)",
+      },
+      {
+        "<leader>nN",
+        function()
+          local View = require("noice.view")
+          local Manager = require("noice.message.manager")
+          local view = View.get_view("split", { enter = true, format = "details" })
+          view:set(Manager.get({}, { history = true, sort = true, reverse = false }))
+          view:display()
+        end,
+        desc = "Noice messages (oldest first)",
+      },
     },
   },
 }

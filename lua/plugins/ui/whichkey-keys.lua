@@ -78,7 +78,8 @@ return {
 
         -- Notifications (using Snacks notifier)
         { "<leader>nd", function() Snacks.notifier.hide() end, desc = "Dismiss notifications" },
-        { "<leader>nh", function() Snacks.notifier.show_history() end, desc = "Notification history" },
+        { "<leader>nh", function() Snacks.notifier.show_history({ reverse = true }) end, desc = "Notification history (newest first)" },
+        { "<leader>nH", function() Snacks.notifier.show_history({ reverse = false }) end, desc = "Notification history (oldest first)" },
 
         -- Code group (from LSP) - works in normal and visual mode
         { "<leader>ca", desc = "Code action", mode = { "n", "v" } },
