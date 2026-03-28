@@ -5,6 +5,39 @@ return {
     build = ":TSUpdate",
     lazy = false,
     config = function()
+      -- Parsers to auto-install
+      local ensure_installed = {
+        "bash",
+        "dockerfile",
+        "go",
+        "gomod",
+        "gosum",
+        "hcl",
+        "helm",
+        "json",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "python",
+        "rust",
+        "terraform",
+        "toml",
+        "yaml",
+      }
+
+      -- Install missing parsers on startup
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          local installed = require("nvim-treesitter.config").get_installed()
+          for _, lang in ipairs(ensure_installed) do
+            if not vim.tbl_contains(installed, lang) then
+              vim.cmd("TSInstall " .. lang)
+            end
+          end
+        end,
+      })
+
       -- Enable highlighting for all filetypes with treesitter support
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(args)
