@@ -17,8 +17,17 @@ return {
         },
       },
     },
+    keymap = {
+      ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
+      ["<Tab>"] = { "select_next", "fallback" },
+      ["<S-Tab>"] = { "select_prev", "fallback" },
+      ["<CR>"] = { "accept", "fallback" },
+    },
     fuzzy = {
       implementation = "prefer_rust",
     },
+  },
+  keys = {
+    { "<C-Space>", "a<C-Space>", desc = "Trigger completion", mode = "n", remap = true },
   },
 }
