@@ -76,9 +76,7 @@ return {
     },
     keys = {
       { "<leader>nl", function() require("noice").cmd("last") end, desc = "Last message" },
-      { "<leader>nh", function() require("noice").cmd("history") end, desc = "Message history" },
-      { "<leader>nn", function() require("noice").cmd("all") end, desc = "All messages" },
-      { "<leader>nd", function() require("noice").cmd("dismiss") end, desc = "Dismiss messages" },
+      { "<leader>nn", function() require("noice").cmd("all") end, desc = "Noice messages (split)" },
     },
   },
 }

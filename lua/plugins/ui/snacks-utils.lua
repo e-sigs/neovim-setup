@@ -29,8 +29,11 @@ return {
       -- Better input/select UI (replaces dressing.nvim)
       input = { enabled = true },
 
-      -- Disabled: using noice.nvim for notifications
-      notifier = { enabled = false },
+      -- Notifications
+      notifier = {
+        enabled = true,
+        date_format = vim.g.time_format_12hr and "%I:%M %p" or "%R",
+      },
 
       -- Disabled: using noice.nvim for LSP progress
       progress = { enabled = false },
