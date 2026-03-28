@@ -1,111 +1,60 @@
--- noice-notifications - UI for messages, cmdline and popupmenu
 return {
-  {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-    },
-    opts = {
-      cmdline = {
-        enabled = true,
-        view = "cmdline_popup",
-        format = {
-          cmdline = { pattern = "^:", icon = "", lang = "vim" },
-          search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
-          search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
-          filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
-          lua = { pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" }, icon = "", lang = "lua" },
-          help = { pattern = "^:%s*he?l?p?%s+", icon = "?" },
-        },
-      },
-      messages = {
-        enabled = true,
-        view = "notify",
-        view_error = "notify",
-        view_warn = "notify",
-        view_history = "messages",
-        view_search = "virtualtext",
-      },
-      popupmenu = {
-        enabled = true,
-        backend = "nui",
-      },
-      lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
-        },
-        hover = {
-          enabled = true,
-          silent = false,
-        },
-        signature = {
-          enabled = true,
-        },
-        progress = {
-          enabled = true,
-        },
-      },
-      presets = {
-        bottom_search = false,
-        command_palette = true,
-        long_message_to_split = true,
-        inc_rename = false,
-        lsp_doc_border = true,
-      },
-      format = {
-        date = {
-          -- Use global time format setting (synced with lualine toggle)
-          format = vim.g.time_format_12hr and "%I:%M:%S %p" or "%H:%M:%S",
-        },
-      },
-      views = {
-        cmdline_popup = {
-          border = {
-            style = "rounded",
-          },
-        },
-        popupmenu = {
-          border = {
-            style = "rounded",
-          },
-        },
+  "folke/noice.nvim",
+  event = "VeryLazy",
+  opts = {
+    lsp = {
+      override = {
+        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+        ["vim.lsp.util.stylize_markdown"] = true,
+        ["cmp.entry.get_documentation"] = true,
       },
     },
-    keys = {
-      { "<leader>nl", function() require("noice").cmd("last") end, desc = "Last message" },
-      {
-        "<leader>nn",
-        function()
-          local View = require("noice.view")
-          local Manager = require("noice.message.manager")
-          local view = View.get_view("split", { enter = true, format = "details" })
-          -- Filter out msg_showcmd events (keypresses)
-          local filter = {
-            ["not"] = { event = "msg_showcmd" },
-          }
-          view:set(Manager.get(filter, { history = true, sort = true, reverse = true }))
-          view:display()
-        end,
-        desc = "Noice messages (newest first)",
-      },
-      {
-        "<leader>nN",
-        function()
-          local View = require("noice.view")
-          local Manager = require("noice.message.manager")
-          local view = View.get_view("split", { enter = true, format = "details" })
-          -- Filter out msg_showcmd events (keypresses)
-          local filter = {
-            ["not"] = { event = "msg_showcmd" },
-          }
-          view:set(Manager.get(filter, { history = true, sort = true, reverse = false }))
-          view:display()
-        end,
-        desc = "Noice messages (oldest first)",
-      },
+    presets = {
+      bottom_search = false,
+      command_palette = false,
+      long_message_to_split = true,
+      lsp_doc_border = true,
+    },
+  },
+  dependencies = {
+    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+    "MunifTanjim/nui.nvim",
+    -- OPTIONAL:
+    --   `nvim-notify` is only needed, if you want to use the notification view.
+    --   If not available, we use `mini` as the fallback
+    "rcarriga/nvim-notify",
+  },
+  keys = {
+    { "<leader>nl", function() require("noice").cmd("last") end, desc = "Last message" },
+    {
+      "<leader>nn",
+      function()
+        local View = require("noice.view")
+        local Manager = require("noice.message.manager")
+        local view = View.get_view("split", { enter = true, format = "details" })
+        -- Filter out msg_showcmd events (keypresses)
+        local filter = {
+          ["not"] = { event = "msg_showcmd" },
+        }
+        view:set(Manager.get(filter, { history = true, sort = true, reverse = true }))
+        view:display()
+      end,
+      desc = "Noice messages (newest first)",
+    },
+    {
+      "<leader>nN",
+      function()
+        local View = require("noice.view")
+        local Manager = require("noice.message.manager")
+        local view = View.get_view("split", { enter = true, format = "details" })
+        -- Filter out msg_showcmd events (keypresses)
+        local filter = {
+          ["not"] = { event = "msg_showcmd" },
+        }
+        view:set(Manager.get(filter, { history = true, sort = true, reverse = false }))
+        view:display()
+      end,
+      desc = "Noice messages (oldest first)",
     },
   },
 }
