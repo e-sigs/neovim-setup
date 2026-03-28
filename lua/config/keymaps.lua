@@ -41,9 +41,10 @@ keymap("v", "p", '"_dP', { desc = "Paste without yank" })
 
 -- Quick save/quit (descriptions shown by which-key)
 keymap("n", "<leader>w", ":w<CR>", { desc = "Save file", silent = true })
-keymap("n", "<leader>q", ":q<CR>", { desc = "Quit", silent = true })
-keymap("n", "<leader>qq", ":qa<CR>", { desc = "Quit all", silent = true })
-keymap("n", "<leader>x", ":x<CR>", { desc = "Save and quit", silent = true })
+keymap("n", "<leader>qq", ":q<CR>", { desc = "Quit", silent = true })
+keymap("n", "<leader>qa", ":qa<CR>", { desc = "Quit all", silent = true })
+keymap("n", "<leader>qw", ":wq<CR>", { desc = "Save and quit", silent = true })
+keymap("n", "<leader>qQ", ":q!<CR>", { desc = "Quit without saving", silent = true })
 
 -- Split windows (using leader since C-w is now close buffer)
 keymap("n", "<leader>sv", ":vsplit<CR>", { desc = "Split vertical", silent = true })

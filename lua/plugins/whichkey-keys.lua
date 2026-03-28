@@ -4,6 +4,7 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
+      delay = 0,  -- Show immediately, don't add to key timeout
       plugins = {
         spelling = { enabled = true },
       },
@@ -82,6 +83,7 @@ return {
         -- Code group (from LSP) - works in normal and visual mode
         { "<leader>ca", desc = "Code action", mode = { "n", "v" } },
         { "<leader>cf", desc = "Format buffer/selection", mode = { "n", "v" } },
+        { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" },
 
         -- Rename group
         { "<leader>rn", desc = "Rename symbol" },
@@ -98,8 +100,11 @@ return {
 
         -- Quick save/quit (actual keymaps in keymaps.lua)
         { "<leader>w", desc = "Save file" },
-        { "<leader>q", desc = "Quit" },
-        { "<leader>x", desc = "Save and quit" },
+        { "<leader>q", group = "Quit" },
+        { "<leader>qq", desc = "Quit" },
+        { "<leader>qa", desc = "Quit all" },
+        { "<leader>qw", desc = "Save and quit" },
+        { "<leader>qQ", desc = "Quit without saving" },
 
         -- Visual mode specific
         { "<leader>hs", desc = "Stage hunk", mode = "v" },

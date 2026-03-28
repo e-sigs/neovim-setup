@@ -18,44 +18,41 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
-      require("nvim-treesitter.configs").setup({
-        textobjects = {
-          select = {
-            enable = true,
-            lookahead = true,
-            keymaps = {
-              ["af"] = { query = "@function.outer", desc = "Select outer function" },
-              ["if"] = { query = "@function.inner", desc = "Select inner function" },
-              ["ac"] = { query = "@class.outer", desc = "Select outer class" },
-              ["ic"] = { query = "@class.inner", desc = "Select inner class" },
-              ["aa"] = { query = "@parameter.outer", desc = "Select outer argument" },
-              ["ia"] = { query = "@parameter.inner", desc = "Select inner argument" },
-            },
-          },
-          move = {
-            enable = true,
-            set_jumps = true,
-            goto_next_start = {
-              ["]f"] = { query = "@function.outer", desc = "Next function start" },
-              ["]c"] = { query = "@class.outer", desc = "Next class start" },
-              ["]a"] = { query = "@parameter.inner", desc = "Next argument" },
-            },
-            goto_next_end = {
-              ["]F"] = { query = "@function.outer", desc = "Next function end" },
-              ["]C"] = { query = "@class.outer", desc = "Next class end" },
-            },
-            goto_previous_start = {
-              ["[f"] = { query = "@function.outer", desc = "Previous function start" },
-              ["[c"] = { query = "@class.outer", desc = "Previous class start" },
-              ["[a"] = { query = "@parameter.inner", desc = "Previous argument" },
-            },
-            goto_previous_end = {
-              ["[F"] = { query = "@function.outer", desc = "Previous function end" },
-              ["[C"] = { query = "@class.outer", desc = "Previous class end" },
-            },
-          },
+      -- Configure the plugin
+      require("nvim-treesitter-textobjects.config").update({
+        select = {
+          lookahead = true,
+        },
+        move = {
+          set_jumps = true,
         },
       })
+
+      local ts_select = require("nvim-treesitter-textobjects.select")
+      local ts_move = require("nvim-treesitter-textobjects.move")
+      local keymap = vim.keymap.set
+
+      -- Selection keymaps (visual and operator-pending modes)
+      keymap({ "x", "o" }, "af", function() ts_select.select_textobject("@function.outer") end, { desc = "Select outer function" })
+      keymap({ "x", "o" }, "if", function() ts_select.select_textobject("@function.inner") end, { desc = "Select inner function" })
+      keymap({ "x", "o" }, "ac", function() ts_select.select_textobject("@class.outer") end, { desc = "Select outer class" })
+      keymap({ "x", "o" }, "ic", function() ts_select.select_textobject("@class.inner") end, { desc = "Select inner class" })
+      keymap({ "x", "o" }, "aa", function() ts_select.select_textobject("@parameter.outer") end, { desc = "Select outer argument" })
+      keymap({ "x", "o" }, "ia", function() ts_select.select_textobject("@parameter.inner") end, { desc = "Select inner argument" })
+
+      -- Movement keymaps
+      keymap({ "n", "x", "o" }, "]f", function() ts_move.goto_next_start("@function.outer") end, { desc = "Next function start" })
+      keymap({ "n", "x", "o" }, "[f", function() ts_move.goto_previous_start("@function.outer") end, { desc = "Previous function start" })
+      keymap({ "n", "x", "o" }, "]F", function() ts_move.goto_next_end("@function.outer") end, { desc = "Next function end" })
+      keymap({ "n", "x", "o" }, "[F", function() ts_move.goto_previous_end("@function.outer") end, { desc = "Previous function end" })
+
+      keymap({ "n", "x", "o" }, "]c", function() ts_move.goto_next_start("@class.outer") end, { desc = "Next class start" })
+      keymap({ "n", "x", "o" }, "[c", function() ts_move.goto_previous_start("@class.outer") end, { desc = "Previous class start" })
+      keymap({ "n", "x", "o" }, "]C", function() ts_move.goto_next_end("@class.outer") end, { desc = "Next class end" })
+      keymap({ "n", "x", "o" }, "[C", function() ts_move.goto_previous_end("@class.outer") end, { desc = "Previous class end" })
+
+      keymap({ "n", "x", "o" }, "]a", function() ts_move.goto_next_start("@parameter.inner") end, { desc = "Next argument" })
+      keymap({ "n", "x", "o" }, "[a", function() ts_move.goto_previous_start("@parameter.inner") end, { desc = "Previous argument" })
     end,
   },
 }
