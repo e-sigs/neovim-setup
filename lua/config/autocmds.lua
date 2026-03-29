@@ -44,6 +44,18 @@ autocmd("VimResized", {
   end,
 })
 
+-- Open file explorer when opening a directory
+autocmd("VimEnter", {
+  group = general,
+  callback = function()
+    local arg = vim.fn.argv(0)
+    if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
+      vim.cmd.bdelete()
+      Snacks.picker.explorer()
+    end
+  end,
+})
+
 -- GitOps/DevOps file type detection
 local filetypes = augroup("FileTypes", { clear = true })
 

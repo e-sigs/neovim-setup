@@ -13,9 +13,7 @@ keymap("n", "<C-Down>", ":resize +2<CR>", { desc = "Resize down", silent = true 
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Resize left", silent = true })
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Resize right", silent = true })
 
--- Buffer navigation
-keymap("n", "<S-l>", ":bnext<CR>", { desc = "Next buffer", silent = true })
-keymap("n", "<S-h>", ":bprevious<CR>", { desc = "Previous buffer", silent = true })
+-- Buffer navigation (handled by bufferline-tabs.lua)
 
 -- Close buffer with Ctrl-w (defined in whichkey-keys.lua to use Snacks)
 
