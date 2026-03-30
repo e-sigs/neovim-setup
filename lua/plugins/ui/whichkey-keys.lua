@@ -46,8 +46,8 @@ return {
         { "<leader><leader>", function() Snacks.picker.smart() end, desc = "Smart picker" },
 
         -- Close buffer/split
-        { "<C-w>", function() require("config.winbar").close_buf(vim.api.nvim_get_current_buf()) end, desc = "Close buffer (window)" },
-        { "<C-S-w>", function() require("config.winbar").close_split_and_cleanup() end, desc = "Close split + orphaned buffers" },
+        { "<C-w>", function() require("winbuf").close_buf() end, desc = "Close buffer (window)" },
+        { "<C-S-w>", function() require("winbuf").close_split() end, desc = "Close split + orphaned buffers" },
 
         -- Find group
         { "<leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
