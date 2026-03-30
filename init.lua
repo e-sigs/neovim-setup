@@ -12,3 +12,12 @@ require("config.autocmds")
 
 -- Bootstrap and load plugins
 require("config.lazy")
+
+-- Per-window buffer tabs (must load after plugins for devicons)
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  once = true,
+  callback = function()
+    require("config.winbar").setup()
+  end,
+})

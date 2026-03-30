@@ -33,6 +33,7 @@ return {
         { "<leader>r", group = "Rename" },
         { "<leader>s", group = "Split" },
         { "<leader>t", group = "Toggle" },
+        { "<leader><Tab>", group = "Tab" },
 
         -- Groups (visual mode)
         { "<leader>c", group = "Code", mode = "v" },
@@ -44,8 +45,9 @@ return {
         { "<leader>/", function() Snacks.picker.grep_buffers() end, desc = "Grep buffers" },
         { "<leader><leader>", function() Snacks.picker.smart() end, desc = "Smart picker" },
 
-        -- Close buffer (override default C-w)
-        { "<C-w>", function() Snacks.bufdelete() end, desc = "Close buffer" },
+        -- Close buffer/split
+        { "<C-w>", function() require("config.winbar").close_buf(vim.api.nvim_get_current_buf()) end, desc = "Close buffer (window)" },
+        { "<C-S-w>", function() require("config.winbar").close_split_and_cleanup() end, desc = "Close split + orphaned buffers" },
 
         -- Find group
         { "<leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
@@ -73,7 +75,7 @@ return {
         { "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git diff" },
 
         -- Buffer group
-        { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete buffer" },
+        { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete buffer (global)" },
         { "<leader>bo", function() Snacks.bufdelete.other() end, desc = "Delete other buffers" },
 
         -- Toggle group
@@ -100,7 +102,6 @@ return {
         { "<leader>sv", desc = "Split vertical" },
         { "<leader>sh", desc = "Split horizontal" },
         { "<leader>se", desc = "Equal split size" },
-        { "<leader>sx", desc = "Close split" },
 
         -- Quick save/quit (actual keymaps in keymaps.lua)
         { "<leader>w", desc = "Save file" },

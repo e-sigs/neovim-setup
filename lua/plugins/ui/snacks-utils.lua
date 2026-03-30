@@ -165,7 +165,7 @@ return {
       { "<leader><leader>", function() Snacks.picker.smart() end, desc = "Smart picker" },
 
       -- Buffer management
-      { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete buffer" },
+      { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete buffer (global)" },
       { "<leader>bo", function() Snacks.bufdelete.other() end, desc = "Delete other buffers" },
 
       -- Lazygit (perfect for GitOps workflows)
