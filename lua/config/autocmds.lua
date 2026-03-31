@@ -44,14 +44,17 @@ autocmd("VimResized", {
   end,
 })
 
--- Open file explorer when opening a directory
+-- Show dashboard when opening a directory (e.g. `svim .`)
 autocmd("VimEnter", {
   group = general,
   callback = function()
     local arg = vim.fn.argv(0)
     if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
+      -- wipe the empty directory buffer and clear arglist
       vim.cmd.bdelete()
-      Snacks.picker.explorer()
+      vim.cmd("%argdelete")
+      -- render dashboard inline (buf=0/win=0 avoids a floating window)
+      Snacks.dashboard.open({ buf = 0, win = 0 })
     end
   end,
 })
