@@ -110,6 +110,9 @@ return {
         { "<leader>qw", desc = "Save and quit" },
         { "<leader>qQ", desc = "Quit without saving" },
 
+        -- Key lookup
+        { "<leader>?", desc = "Key lookup" },
+
         -- Visual mode specific
         { "<leader>hs", desc = "Stage hunk", mode = "v" },
         { "<leader>hr", desc = "Reset hunk", mode = "v" },
