@@ -1,7 +1,7 @@
 -- Per-window buffer tabs (VS Code-style editor groups)
 return {
   {
-    "e-sigs/winbuf.nvim",
+    dir = "/Users/dojo/dev/winbuf.nvim",
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {

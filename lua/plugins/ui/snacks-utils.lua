@@ -78,6 +78,111 @@ return {
             hidden = true,
             ignored = false,
           },
+          explorer = {
+            -- Custom floating preview: sidebar stays left, preview floats in center
+            on_show = function(picker)
+              local show = false -- Preview hidden by default, toggle with 'p'
+              local gap = 2
+
+              local position = picker.resolved_layout.layout.position
+              local rel = picker.layout.root
+
+              local update = function(win)
+                local border = win:border_size().left + win:border_size().right
+                local sidebar_width = vim.api.nvim_win_get_width(rel.win)
+                local available_width = vim.o.columns - sidebar_width - border - gap
+
+                -- Preview takes 70% of available space, centered in the remaining area
+                local preview_width = math.floor(available_width * 0.7)
+                preview_width = math.max(40, math.min(120, preview_width))
+
+                -- Center horizontally in the space to the right of explorer
+                local remaining_space = available_width - preview_width
+                local horizontal_offset = math.floor(remaining_space / 2)
+
+                -- Center vertically on screen
+                local preview_height = math.floor(vim.o.lines * 0.7)
+                local vertical_offset = math.floor((vim.o.lines - preview_height) / 2)
+
+                win.opts.width = preview_width
+                win.opts.height = preview_height
+
+                if position == "left" then
+                  win.opts.col = sidebar_width + gap + horizontal_offset
+                end
+                if position == "right" then
+                  win.opts.col = horizontal_offset
+                end
+                win.opts.row = vertical_offset
+
+                win:update()
+              end
+
+              -- Create floating preview window
+              local preview_win = Snacks.win.new({
+                relative = "editor",
+                external = false,
+                focusable = false,
+                border = "rounded",
+                backdrop = false,
+                show = show,
+                bo = {
+                  filetype = "snacks_float_preview",
+                  buftype = "nofile",
+                  buflisted = false,
+                  swapfile = false,
+                  undofile = false,
+                },
+                on_win = function(win)
+                  update(win)
+                  picker:show_preview()
+                end,
+              })
+
+              -- Close preview when leaving explorer
+              rel:on("WinLeave", function()
+                vim.schedule(function()
+                  if not picker:is_focused() then
+                    picker.preview.win:close()
+                  end
+                end)
+              end)
+
+              -- Update preview position on resize
+              rel:on("WinResized", function()
+                update(preview_win)
+              end)
+
+              -- Replace picker's preview window with floating one
+              picker.preview.win = preview_win
+              picker.main = preview_win.win
+            end,
+
+            on_close = function(picker)
+              picker.preview.win:close()
+            end,
+
+            layout = {
+              preset = "sidebar",
+              preview = false, -- Disable built-in preview (using custom floating)
+            },
+
+            actions = {
+              -- Override toggle_preview for floating window
+              toggle_preview = function(picker)
+                picker.preview.win:toggle()
+              end,
+            },
+
+            win = {
+              list = {
+                keys = {
+                  ["<CR>"] = "confirm",
+                  ["p"] = "toggle_preview",
+                },
+              },
+            },
+          },
         },
         win = {
           input = {

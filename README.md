@@ -101,6 +101,8 @@ sudo install lazygit /usr/local/bin
 
 ## Installation
 
+### Option 1: Clone directly (recommended for most users)
+
 ```bash
 # Backup existing config (if any)
 mv ~/.config/nvim ~/.config/nvim.bak
@@ -109,6 +111,24 @@ mv ~/.config/nvim ~/.config/nvim.bak
 git clone https://github.com/yourusername/neovim-setup.git ~/.config/nvim
 
 # Launch Neovim - plugins will bootstrap automatically
+nvim
+```
+
+### Option 2: Symlink (recommended for development)
+
+If you want to keep the repo in a separate location (e.g., for easier version control or development):
+
+```bash
+# Backup existing config (if any)
+mv ~/.config/nvim ~/.config/nvim.bak
+
+# Clone to your preferred location
+git clone https://github.com/yourusername/neovim-setup.git ~/dev/neovim-setup
+
+# Create symlink to Neovim config directory
+ln -s ~/dev/neovim-setup ~/.config/nvim
+
+# Launch Neovim
 nvim
 ```
 
