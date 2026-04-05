@@ -2,6 +2,8 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    -- Pin to last version supporting Neovim 0.11 (remove when upgrading to 0.12+)
+    commit = "90cd6580",
     build = ":TSUpdate",
     lazy = false,
     config = function()
