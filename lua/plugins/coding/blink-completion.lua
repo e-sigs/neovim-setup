@@ -1,7 +1,7 @@
 return {
   "saghen/blink.cmp",
+  -- Use release tag to download pre-built binaries (no Cargo/Rust required)
   version = "1.*",
-  build = "cargo build --release",
   opts = {
     completion = {
       menu = {
@@ -24,7 +24,8 @@ return {
       ["<CR>"] = { "accept", "fallback" },
     },
     fuzzy = {
-      implementation = "prefer_rust",
+      -- Use Rust fuzzy matcher if available, fall back to Lua (shows warning if Rust unavailable)
+      implementation = "prefer_rust_with_warning",
     },
   },
   keys = {
