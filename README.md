@@ -123,7 +123,7 @@ If you want to keep the repo in a separate location (e.g., for easier version co
 mv ~/.config/nvim ~/.config/nvim.bak
 
 # Clone to your preferred location
-git clone https://github.com/yourusername/neovim-setup.git ~/dev/neovim-setup
+git clone https://github.com/e-sigs/neovim-setup.git ~/dev/neovim-setup
 
 # Create symlink to Neovim config directory
 ln -s ~/dev/neovim-setup ~/.config/nvim
