@@ -8,7 +8,7 @@ A modern Neovim configuration focused on **backend development** and **GitOps wo
 |---------|----------------|
 | **Completions** | blink.cmp (LSP, snippets, buffer, path sources) |
 | **Fuzzy Finder** | Snacks picker (files, grep, buffers, LSP symbols) |
-| **LSP** | Mason auto-install with vim.lsp.config (0.11+ API) |
+| **LSP** | Built-in `vim.lsp.config` / `vim.lsp.enable` APIs |
 | **UI Enhancements** | noice.nvim (cmdline, messages, LSP docs) |
 | **Notifications** | Snacks notifier (popup notifications + history) |
 | **Git Integration** | Gitsigns (hunks, blame) + Snacks lazygit |
@@ -54,14 +54,16 @@ Optimized for backend and DevOps workflows:
 
 ### Language-Specific (for LSP)
 
-These are automatically installed by Mason, but you may need the base toolchains:
+Language servers are expected to be installed outside Neovim and available on `$PATH`:
 
-| Language | Toolchain Required |
-|----------|-------------------|
-| **Go** | `go` (golang.org) |
-| **Python** | `python3`, `pip` |
-| **Rust** | `rustc`, `cargo` (rustup.rs) |
-| **Node.js** | `node`, `npm` (for many LSP servers) |
+| Language | Tools |
+|----------|-------|
+| **Go** | `go`, `gopls` |
+| **Python** | `python3`, `pip`, `pyright` |
+| **Rust** | `rustc`, `cargo`, `rust-analyzer` |
+| **Terraform** | `terraform-ls`, `tflint` |
+| **YAML / Docker / Shell / JSON / Helm** | matching language server executables such as `yaml-language-server`, `docker-langserver`, `docker-compose-langserver`, `bash-language-server`, `vscode-json-language-server`, `helm_ls` |
+| **Lua** | `lua-language-server` |
 
 ### Quick Install (macOS)
 
@@ -134,8 +136,8 @@ nvim
 
 On first launch:
 1. lazy.nvim will auto-install all plugins
-2. Mason will auto-install all LSP servers
-3. Treesitter will auto-install language parsers
+2. Treesitter will auto-install language parsers
+3. LSP servers will start when their executables are available on `$PATH`
 
 Run `:checkhealth` to verify everything is working.
 
@@ -318,7 +320,6 @@ lua/
     git/
       gitsigns-git.lua      # Git hunks and blame
     lsp/
-      mason-lsp.lua         # LSP server installer
       nvim-lspconfig-servers.lua # LSP configuration
     tools/
       opencode-ai.lua       # OpenCode AI integration
@@ -338,7 +339,6 @@ After installation, run these commands inside Neovim:
 :checkhealth              " Run health checks
 :checkhealth noice        " Check noice.nvim specifically
 :Lazy                     " Open plugin manager
-:Mason                    " Open LSP server manager
 :LspInfo                  " Check LSP status
 ```
 

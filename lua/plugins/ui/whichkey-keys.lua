@@ -89,7 +89,6 @@ return {
         -- Code group (from LSP) - works in normal and visual mode
         { "<leader>ca", desc = "Code action", mode = { "n", "v" } },
         { "<leader>cf", desc = "Format buffer/selection", mode = { "n", "v" } },
-        { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" },
 
         -- Rename group
         { "<leader>rn", desc = "Rename symbol" },

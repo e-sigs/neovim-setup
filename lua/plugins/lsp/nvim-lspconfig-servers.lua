@@ -3,10 +3,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-    },
     config = function()
       -- Default capabilities (extended by completion plugin if available)
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -142,7 +138,7 @@ return {
         },
       })
 
-      -- Enable servers (they will auto-start when filetypes match)
+      -- Enable servers (must be installed separately and available on PATH)
       vim.lsp.enable({
         "gopls",
         "pyright",
@@ -181,28 +177,5 @@ return {
         },
       })
     end,
-  },
-
-  {
-    "williamboman/mason-lspconfig.nvim",
-    lazy = true,
-    dependencies = { "williamboman/mason.nvim" },
-    opts = {
-      ensure_installed = {
-        "gopls",
-        "pyright",
-        "rust_analyzer",
-        "terraformls",
-        "tflint",
-        "yamlls",
-        "dockerls",
-        "docker_compose_language_service",
-        "bashls",
-        "helm_ls",
-        "lua_ls",
-        "jsonls",
-      },
-      automatic_installation = true,
-    },
   },
 }

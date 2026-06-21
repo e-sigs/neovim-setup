@@ -33,7 +33,6 @@ nvim
 :Lazy                     " Open plugin manager UI
 :Lazy sync                " Update all plugins
 :Lazy check               " Check for plugin updates
-:Mason                    " Open LSP server manager
 :LspInfo                  " Show LSP status for current buffer
 ```
 
@@ -67,7 +66,6 @@ lua/
     git/                    # Git integration
       gitsigns-git.lua
     lsp/                    # Language server support
-      mason-lsp.lua
       nvim-lspconfig-servers.lua
     tools/                  # External tool integrations
       opencode-ai.lua
@@ -200,7 +198,7 @@ pcall(telescope.load_extension, "fzf")
 
 1. **No external dependencies**: This repo is self-contained Lua config
 2. **Lazy loading**: Plugins use events/commands for deferred loading
-3. **Mason manages LSP servers**: Don't manually install language servers
+3. **LSP servers are external tools**: Install them outside Neovim and keep them on `$PATH`
 4. **Leader key is Space**: All `<leader>` mappings use spacebar
 5. **Follow existing patterns**: Match the style of neighboring code
 6. **Test changes**: After editing, open Neovim and run `:checkhealth`
@@ -224,8 +222,8 @@ Custom filetypes are detected in `lua/config/autocmds.lua`:
 ### Adding a New LSP Server
 
 1. Add to the `servers` table in `lua/plugins/lsp/nvim-lspconfig-servers.lua`
-2. Add to `ensure_installed` in `lua/plugins/lsp/mason-lsp.lua`
-3. Run `:Mason` to install, or restart Neovim for auto-install
+2. Install the server executable outside Neovim and ensure it is available on `$PATH`
+3. Restart Neovim or run `:LspInfo` to verify the server attaches
 
 ### Adding Global Keymaps
 
