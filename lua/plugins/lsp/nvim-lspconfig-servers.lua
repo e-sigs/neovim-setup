@@ -138,21 +138,27 @@ return {
         },
       })
 
-      -- Enable servers (must be installed separately and available on PATH)
-      vim.lsp.enable({
-        "gopls",
-        "pyright",
-        "rust_analyzer",
-        "terraformls",
-        "tflint",
-        "yamlls",
-        "dockerls",
-        "docker_compose_language_service",
-        "bashls",
-        "helm_ls",
-        "lua_ls",
-        "jsonls",
-      })
+      -- Enable servers installed separately and available on PATH.
+      local servers = {
+        gopls = "gopls",
+        pyright = "pyright-langserver",
+        rust_analyzer = "rust-analyzer",
+        terraformls = "terraform-ls",
+        tflint = "tflint",
+        yamlls = "yaml-language-server",
+        dockerls = "docker-langserver",
+        docker_compose_language_service = "docker-compose-langserver",
+        bashls = "bash-language-server",
+        helm_ls = "helm_ls",
+        lua_ls = "lua-language-server",
+        jsonls = "vscode-json-language-server",
+      }
+
+      for server, executable in pairs(servers) do
+        if vim.fn.executable(executable) == 1 then
+          vim.lsp.enable(server)
+        end
+      end
 
       -- Diagnostic configuration
       vim.diagnostic.config({
