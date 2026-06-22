@@ -56,14 +56,20 @@ Optimized for backend and DevOps workflows:
 
 Language servers are expected to be installed outside Neovim and available on `$PATH`:
 
-| Language | Tools |
-|----------|-------|
-| **Go** | `go`, `gopls` |
-| **Python** | `python3`, `pip`, `pyright` |
-| **Rust** | `rustc`, `cargo`, `rust-analyzer` |
-| **Terraform** | `terraform-ls`, `tflint` |
-| **YAML / Docker / Shell / JSON / Helm** | matching language server executables such as `yaml-language-server`, `docker-langserver`, `docker-compose-langserver`, `bash-language-server`, `vscode-json-language-server`, `helm_ls` |
-| **Lua** | `lua-language-server` |
+| Language | Executable | Homebrew package |
+|----------|------------|------------------|
+| **Go** | `go`, `gopls` | `go`, `gopls` |
+| **Python** | `pyright-langserver` | `pyright` |
+| **Rust** | `rust-analyzer` | `rust-analyzer` |
+| **Terraform** | `terraform-ls` | `terraform-ls` |
+| **Terraform linting** | `tflint` | `terraform-linters/tap/tflint` |
+| **YAML** | `yaml-language-server` | `yaml-language-server` |
+| **Dockerfile** | `docker-langserver` | `dockerfile-language-server` |
+| **Docker Compose** | `docker-compose-langserver` | `docker-compose-langserver` |
+| **Shell** | `bash-language-server` | `bash-language-server` |
+| **Helm** | `helm_ls` | `helm-ls` |
+| **JSON** | `vscode-json-language-server` | `vscode-langservers-extracted` |
+| **Lua** | `lua-language-server` | `lua-language-server` |
 
 ### Quick Install (macOS)
 
@@ -73,6 +79,15 @@ Language servers are expected to be installed outside Neovim and available on `$
 
 # Install all dependencies
 brew install neovim ripgrep tree-sitter fd fzf lazygit
+
+# Install language servers used by this config
+brew install go gopls pyright rust-analyzer terraform-ls yaml-language-server \
+  dockerfile-language-server docker-compose-langserver bash-language-server \
+  helm-ls lua-language-server vscode-langservers-extracted
+
+# Optional Terraform linting LSP
+brew tap terraform-linters/tap
+brew install terraform-linters/tap/tflint
 
 # Install a Nerd Font (e.g., JetBrains Mono)
 brew install --cask font-jetbrains-mono-nerd-font
