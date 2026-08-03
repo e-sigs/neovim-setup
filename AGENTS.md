@@ -4,12 +4,13 @@ This document provides guidelines for AI coding agents working with this Neovim 
 
 ## Project Overview
 
-This is a **Neovim configuration** written in Lua, focused on **backend/GitOps development**. It uses lazy.nvim as the plugin manager and provides LSP support for Go, Python, Rust, Terraform, Kubernetes, Docker, and other DevOps tools.
+This is a **Neovim configuration** written in Lua, focused on **backend/GitOps development**.
+It uses Vimpack (`vim.pack`) as the plugin manager and provides LSP support for Go, Python, Rust, Terraform, Kubernetes, Docker, and other DevOps tools.
 
 ## Technology Stack
 
 - **Language**: Lua (Neovim's native configuration language)
-- **Plugin Manager**: lazy.nvim (folke/lazy.nvim)
+- **Plugin Manager**: Vimpack (`vim.pack`, built into Neovim 0.12+)
 - **Target Users**: Backend developers, DevOps/GitOps engineers
 
 ## Build/Lint/Test Commands
@@ -30,9 +31,9 @@ nvim
 
 ```vim
 :checkhealth              " Run health checks for all plugins
-:Lazy                     " Open plugin manager UI
-:Lazy sync                " Update all plugins
-:Lazy check               " Check for plugin updates
+:PackStatus               " Show Vimpack plugin status
+:PackUpdate               " Update all Vimpack plugins
+:lua vim.pack.get()       " Inspect managed plugins
 :LspInfo                  " Show LSP status for current buffer
 ```
 
@@ -55,7 +56,7 @@ lua/
     options.lua             # Neovim options (vim.opt)
     keymaps.lua             # Global key mappings
     autocmds.lua            # Autocommands
-    lazy.lua                # Plugin manager bootstrap
+    vimpack.lua             # Vimpack plugin management and setup
   plugins/
     coding/                 # Coding-related plugins
       blink-completion.lua  # Completions
@@ -106,26 +107,23 @@ local autocmd = vim.api.nvim_create_autocmd
 local opts = { noremap = true, silent = true }
 ```
 
-### Plugin Configuration Pattern (lazy.nvim)
+### Plugin Configuration Pattern (Vimpack migration)
 
 ```lua
 -- Single-line comment describing the plugin's purpose
 return {
   {
     "author/plugin-name",
-    event = { "BufReadPre", "BufNewFile" },  -- Lazy loading events
     dependencies = {
       "dependency/plugin",
-      { "optional/plugin", opts = {} },      -- Inline opts for simple deps
+      { "optional/plugin", opts = {} },
     },
     opts = {
-      -- Configuration options (auto-calls setup)
+      -- Configuration options, applied by lua/config/vimpack.lua
     },
     -- OR for complex configs:
-    config = function()
-      require("plugin").setup({
-        -- Configuration
-      })
+    config = function(_, opts)
+      require("plugin").setup(opts)
     end,
   },
 }
@@ -197,12 +195,12 @@ pcall(telescope.load_extension, "fzf")
 ## Important Notes for Agents
 
 1. **No external dependencies**: This repo is self-contained Lua config
-2. **Lazy loading**: Plugins use events/commands for deferred loading
+2. **Vimpack loading**: Plugins are installed and loaded by `lua/config/vimpack.lua`; `event` and `cmd` fields are migration metadata unless the local loader handles them
 3. **LSP servers are external tools**: Install them outside Neovim and keep them on `$PATH`
 4. **Leader key is Space**: All `<leader>` mappings use spacebar
 5. **Follow existing patterns**: Match the style of neighboring code
 6. **Test changes**: After editing, open Neovim and run `:checkhealth`
-7. **Plugin files return tables**: Each file in `lua/plugins/` must return a lazy.nvim spec table
+7. **Plugin files return tables**: Each file in `lua/plugins/` must return a plugin spec table consumed by `lua/config/vimpack.lua`
 
 ## File Type Detection
 
@@ -216,8 +214,9 @@ Custom filetypes are detected in `lua/config/autocmds.lua`:
 ### Adding a New Plugin
 
 1. Create `lua/plugins/{category}/{name}-{purpose}.lua`
-2. Return a lazy.nvim spec table
-3. Restart Neovim or run `:Lazy sync`
+2. Return a plugin spec table and add the repository to `lua/config/vimpack.lua`
+3. Restart Neovim or run `:PackUpdate`
+4. Commit `nvim-pack-lock.json` when plugin revisions change
 
 ### Adding a New LSP Server
 

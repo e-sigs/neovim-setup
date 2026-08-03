@@ -1,6 +1,7 @@
 # Neovim Configuration for Backend/GitOps Development
 
-A modern Neovim configuration focused on **backend development** and **GitOps workflows**. Built for Neovim 0.11+ with lazy.nvim as the plugin manager.
+A modern Neovim configuration focused on **backend development** and **GitOps workflows**.
+Built for Neovim 0.12+ with Vimpack (`vim.pack`) as the plugin manager.
 
 ## Features
 
@@ -38,7 +39,7 @@ Optimized for backend and DevOps workflows:
 
 | Dependency | Description | Installation |
 |------------|-------------|--------------|
-| **Neovim 0.11+** | Required for new LSP and Treesitter APIs | [neovim.io](https://neovim.io) |
+| **Neovim 0.12+** | Required for Vimpack, new LSP APIs, and Treesitter APIs | [neovim.io](https://neovim.io) |
 | **Git** | Plugin management and git features | Pre-installed on most systems |
 | **Nerd Font** | Icons throughout the UI | [nerdfonts.com](https://www.nerdfonts.com/) |
 | **ripgrep** | Fast grep for file searching | `brew install ripgrep` |
@@ -96,7 +97,7 @@ brew install --cask font-jetbrains-mono-nerd-font
 ### Quick Install (Ubuntu/Debian)
 
 ```bash
-# Neovim 0.11+ (use AppImage or build from source)
+# Neovim 0.12+ (use AppImage or build from source)
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 chmod u+x nvim.appimage
 sudo mv nvim.appimage /usr/local/bin/nvim
@@ -150,7 +151,7 @@ nvim
 ```
 
 On first launch:
-1. lazy.nvim will auto-install all plugins
+1. Vimpack will auto-install all plugins listed in `lua/config/vimpack.lua`
 2. Treesitter will auto-install language parsers
 3. LSP servers will start when their executables are available on `$PATH`
 
@@ -168,6 +169,9 @@ Run `:checkhealth` to verify everything is working.
 | `<leader>q` | Quit |
 | `<leader>x` | Save and quit |
 | `<C-w>` | Close buffer |
+| `<leader>l` | Plugin status |
+| `<leader>pu` | Update plugins |
+| `<leader>ps` | Plugin status |
 | `<Esc>` | Clear search highlight |
 
 ### Navigation
@@ -324,7 +328,7 @@ lua/
     options.lua             # Neovim options (vim.opt)
     keymaps.lua             # Global key mappings
     autocmds.lua            # Autocommands (filetype detection)
-    lazy.lua                # Plugin manager bootstrap
+    vimpack.lua             # Vimpack plugin management and setup
   plugins/
     coding/
       blink-completion.lua  # Completions (blink.cmp)
@@ -353,11 +357,18 @@ After installation, run these commands inside Neovim:
 ```vim
 :checkhealth              " Run health checks
 :checkhealth noice        " Check noice.nvim specifically
-:Lazy                     " Open plugin manager
+:PackStatus               " Show Vimpack plugin status
+:PackUpdate               " Update Vimpack plugins
 :LspInfo                  " Check LSP status
 ```
 
 ## Plugin Architecture
+
+### Vimpack
+
+Plugin sources live in `lua/config/vimpack.lua`.
+Locked plugin revisions live in `nvim-pack-lock.json`.
+Use `:PackStatus` to inspect installed plugins and `:PackUpdate` to update them.
 
 ### Noice.nvim Features
 

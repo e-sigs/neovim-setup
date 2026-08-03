@@ -1,7 +1,6 @@
 return {
   {
     "olimorris/onedarkpro.nvim",
-    lazy = false, -- load at startup (not later)
     priority = 2000, -- load before most other plugins
     config = function()
       -- 1) Configure the theme

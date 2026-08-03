@@ -14,7 +14,6 @@ return {
   {
     "folke/snacks.nvim",
     priority = 1000,
-    lazy = false,
     opts = {
       -- Indentation guides (replaces indent-blankline)
       indent = {
@@ -63,10 +62,10 @@ return {
             "⠀⠀⢸⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀",
           }, "\n"),
         },
+        -- Do not include Snacks' built-in startup section because it requires lazy.stats.
         sections = {
           { section = "header" },
           { section = "keys", gap = 1, padding = 1 },
-          { section = "startup" },
         },
       },
 

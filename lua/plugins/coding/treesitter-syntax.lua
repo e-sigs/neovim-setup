@@ -2,10 +2,8 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    -- Pin to last version supporting Neovim 0.11 (remove when upgrading to 0.12+)
-    commit = "90cd6580",
+    -- Pinned in lua/config/vimpack.lua and nvim-pack-lock.json.
     build = ":TSUpdate",
-    lazy = false,
     config = function()
       -- Parsers to auto-install
       local ensure_installed = {

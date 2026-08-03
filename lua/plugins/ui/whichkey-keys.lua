@@ -30,6 +30,7 @@ return {
         { "<leader>h", group = "Hunk" },
         { "<leader>o", group = "OpenCode" },
         { "<leader>n", group = "Notifications" },
+        { "<leader>p", group = "Plugins" },
         { "<leader>r", group = "Rename" },
         { "<leader>s", group = "Split" },
         { "<leader>t", group = "Toggle" },
@@ -108,6 +109,11 @@ return {
         { "<leader>qq", desc = "Quit all" },
         { "<leader>qw", desc = "Save and quit" },
         { "<leader>qQ", desc = "Quit without saving" },
+
+        -- Plugin manager
+        { "<leader>l", desc = "Plugin status" },
+        { "<leader>pu", desc = "Update plugins" },
+        { "<leader>ps", desc = "Plugin status" },
 
         -- Key lookup
         { "<leader>?", desc = "Key lookup" },
